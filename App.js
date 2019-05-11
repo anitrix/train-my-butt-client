@@ -7,7 +7,8 @@
  */
 
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import {Platform, StyleSheet, Text, View, Button} from 'react-native';
+import Video from 'react-native-video';
 
 const instructions = Platform.select({
   ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
@@ -21,9 +22,30 @@ export default class App extends Component<Props> {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
+        <View style={{
+          width: 200,
+          height: 200
+        }}>
+          <Video
+            source={{uri: 'https://stream.mux.com/DVvrwBy5l8Kv7028lVNVA6HzXEM700yNLy.m3u8', type: 'm3u8'}}
+            ref={player => {this.player = player;}}
+            onLoad={e => console.log(e)}
+            style={{
+              backgroundColor: '#000',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0
+            }}
+            hls={true}
+            paused={false}
+          />
+        </View>
+        <Button title="Play " onPress={(e) => {
+          console.log(this.player.seek(2));
+          // this.player.play()
+        }}/>
       </View>
     );
   }
